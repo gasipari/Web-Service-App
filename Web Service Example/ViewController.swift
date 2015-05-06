@@ -16,7 +16,18 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-         let manager = AFHTTPRequestOperationManager()
+        self.myNameLabel.text = ""
+        
+        //instantiate a gray Activity Indicator View
+        var activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        //add the activity to the ViewController's view
+        view.addSubview(activityIndicatorView)
+        //position the Activity Indicator View in the center of the view
+        activityIndicatorView.center = view.center
+        //tell the Activity Indicator View to begin animating
+        activityIndicatorView.startAnimating()
+        
+        let manager = AFHTTPRequestOperationManager()
         
         manager.GET( "http:/graph.facebook.com/bobdylan",
             parameters: nil,
@@ -27,6 +38,8 @@ class ViewController: UIViewController {
                 if let myName = responseObject["name"] as? String {
                     self.myNameLabel.text = myName
                 }
+                // remove the activity indicator
+                activityIndicatorView.removeFromSuperview()
                 
             }, /* end of closure */
             failure: { (operation: AFHTTPRequestOperation!,error: NSError!) in
